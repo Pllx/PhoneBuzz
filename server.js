@@ -1,20 +1,17 @@
 var express = require('express');
 var app = express();
-
-var config = require('./utils/config');
-var fizzbuzz = require('./fizzbuzz').createString;
 var bodyParser = require('body-parser');
 var twilio = require('twilio');
+var config = require('./utils/config');
+var fizzbuzz = require('./fizzbuzz').createString;
 var client = twilio(config.accountSid, config.authToken);
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-
+app.use(bodyParser.urlencoded({extended: true }));
 app.use(express.static(__dirname + '/client/views'));
 
+
+//config, twilio
 app.post('/phonebuzz', function(req,res) {
-  console.log('got here');
   var options = {
     url : config.url + '/phonebuzz'
   };
@@ -23,57 +20,54 @@ app.post('/phonebuzz', function(req,res) {
 
     var resp = new twilio.TwimlResponse();
 
-    resp.say('I\'m slim shady yes im the real shady all you other slim shadies are just imitating')
+    resp.say('Welcome to PhoneBuzz!')
         .gather({
           action : config.url + '/phonebuzz/results',
           finishOnKey: '#'
         }, function(node) {
-          node.say('Please enter a number for phonebuzz')
-              .say('Press the # to submit')
+          node.say('Please enter a number')
+              .say('Then, press the # to submit');
         });
 
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(resp.toString());
   } else {
-    console.log('oh no');
-    res.status(403).send('Not sent from Twilio');
+    console.log('Request validation failed');
+    res.status(403).send('Validation failed: Not sent from Twilio');
   }
   //https://demo.twilio.com/welcome/voice/
 });
 
+//twilio, fizzbuzz
 app.post('/phonebuzz/results', function(req,res) {
   var input = req.body.Digits;
   var result = fizzbuzz(input);
   var resp = new twilio.TwimlResponse();
 
-  resp.say(result);
+  resp.say(result)
+      .say('Thank you, and have a great day!')
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(resp.toString());
-
 })
 
+// twilio client
 app.post('/phonebuzz/call', function(req,res) {
-  console.log('!!', req.body.number);
+  // removes non digits
+  var number = req.body.number.replace(/\D/g,'');
+  // defaults to U.S. if country code isn't provided
+  var prefix = (number.length === 10) ? '+1' : '+';
+  number = prefix + number;
+
+  //if number.length < 12 or invalidated
   client.makeCall({
-    to: req.body.number,
+    to: number,
     from: config.from,
     url: config.url + '/phonebuzz'
   }, function(err, response) {
-    if (err) console.log('err:', err);
-    console.log(response.from);
-  });
-})
-
-app.get('/sendText', function(req,res) {
-
-  client.sendMessage({
-    to : config.to,
-    from: config.from,
-    body: 'You\'re awesome.'
-  }, function(err, text) {
-    if (!err) {
-      console.log('You sent:',text.body);
-      console.log('Current status of this text message is:', text.status);
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
     }
   });
 });

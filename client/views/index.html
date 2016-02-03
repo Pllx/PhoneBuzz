@@ -11,35 +11,10 @@
       type="text/css" rel="stylesheet" />
     <script type="text/javascript">
 
-      // var TwilioCapability = Twilio.utils.TwilioCapability; //TwilioCapability;
-      var accountSid = 'AC2c6e1c99a17e3b9105ef8f11730f1af6';
-      var authToken = '5abc2c441a99f5f817f3d8eb8c2079c5';
-
-      // var capability = TwilioCapability(require(accountSid, authToken));
-      // capability.allow_client_incoming('test');
-      // console.log(capability.generate());
-      // Twilio.Device.setup(capability);
-
-      //Twilio.Device.setup("<?php echo $token; ?>");
-
-      // Twilio.Device.ready(function (device) {
-      //   $("#log").text("Ready");
-      // });
-      //
-      // Twilio.Device.error(function (error) {
-      //   $("#log").text("Error: " + error.message);
-      // });
-      //
-      // Twilio.Device.connect(function (conn) {
-      //   $("#log").text("Successfully established call");
-      // });
-      console.log('test');
-      console.log($('#number-form'));
       $(document).ready(function() {
         $('#number-form').submit(function(event) {
           event.preventDefault();
           var number = $("input:first").val();
-          console.log('hi',number);
 
           $.post('/phonebuzz/call', {number: number}, function(result) {
             console.log('result',result);
@@ -52,10 +27,10 @@
   <body>
     <form id="number-form">
       Phone number: <br>
-      <input type="text" name="number" placeholder="+1 555 555 5555">
+      <input type="text" name="number" placeholder="+1 (555) 555-5555">
       <input type="submit">
     </form>
 
-    <div id="log">Loading pigeons...</div>
+    <div id="log">Don't mind the styling...</div>
   </body>
 </html>

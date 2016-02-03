@@ -12,7 +12,6 @@ function FizzBuzz() {
       }
       result += history[i]+', ';
     }
-    console.log(result);
     return result;
   }
 }
