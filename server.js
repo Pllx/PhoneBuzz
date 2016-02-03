@@ -1,4 +1,5 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 
 var config = require('./utils/config');
 var fizzbuzz = require('./fizzbuzz').createString;
@@ -10,22 +11,25 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.post('/', function(req,res) {
+app.use(express.static(__dirname + '/client/views'));
+
+app.post('/phonebuzz', function(req,res) {
+  console.log('got here');
   var options = {
-    url : config.url
+    url : config.url + '/phonebuzz'
   };
 
   if (twilio.validateExpressRequest(req, config.authToken, options)) {
 
     var resp = new twilio.TwimlResponse();
 
-    resp.say('There must be some kind of way out of here')
+    resp.say('I\'m slim shady yes im the real shady all you other slim shadies are just imitating')
         .gather({
-          action : config.url + '/phonebuzz',
+          action : config.url + '/phonebuzz/results',
           finishOnKey: '#'
         }, function(node) {
           node.say('Please enter a number for phonebuzz')
-              .say('Press # to submit')
+              .say('Press the # to submit')
         });
 
     res.writeHead(200, {'Content-Type': 'text/xml'});
@@ -37,7 +41,7 @@ app.post('/', function(req,res) {
   //https://demo.twilio.com/welcome/voice/
 });
 
-app.post('/phonebuzz_results', function(req,res) {
+app.post('/phonebuzz/results', function(req,res) {
   var input = req.body.Digits;
   var result = fizzbuzz(input);
   var resp = new twilio.TwimlResponse();
@@ -48,8 +52,19 @@ app.post('/phonebuzz_results', function(req,res) {
 
 })
 
+app.post('/phonebuzz/call', function(req,res) {
+  console.log('!!', req.body.number);
+  client.makeCall({
+    to: req.body.number,
+    from: config.from,
+    url: config.url + '/phonebuzz'
+  }, function(err, response) {
+    if (err) console.log('err:', err);
+    console.log(response.from);
+  });
+})
+
 app.get('/sendText', function(req,res) {
-  //res.sendFile(__dirname + '/client/views/part1.html');
 
   client.sendMessage({
     to : config.to,
