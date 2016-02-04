@@ -2,12 +2,13 @@ var twilio = require('twilio');
 var config = require('../utils/config');
 
 function phonebuzz (req,res) {
+  // define custom url (set in config) for use in validation
   var options = {
     url : config.url + '/phonebuzz'
   };
 
   if (twilio.validateExpressRequest(req, config.authToken, options)) {
-
+    
     var resp = new twilio.TwimlResponse();
 
     resp.say('Welcome to PhoneBuzz!')
