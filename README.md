@@ -11,11 +11,11 @@ Play FizzBuzz over the phone!
 
 1. Download [ngrok](https://ngrok.com/)
 2. Unzip the file, and in the same folder, run `./ngrok http 8080`
-3. Copy the https URL and enter it as the request url under 'Voice' for your Twilio number. When someone calls your Twilio number, it will hit this URL.
+3. Copy the https URL and enter it as the request url under 'Voice' for your Twilio number with '/phonebuzz' appended to the end: `https://example.ngrok.io/phonebuzz`. When someone calls your Twilio number, it will hit this URL.
 
 ### Configure and run
 1. Rename utils/sample_config.js to config.js
-1. Update config.js with the ngrok url and API keys
+1. Update config.js with the API keys and the ngrok url:`https://example.ngrok.io`
 2. Install dependencies with `npm install`
 3. Start the server with `npm start`
 
