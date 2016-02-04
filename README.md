@@ -14,7 +14,8 @@ Play FizzBuzz over the phone!
 3. Copy the https URL and enter it as the request url under 'Voice' for your Twilio number. When someone cal
 
 ### Configure and run
-1. Update utils/config.js with the ngrok url and API keys
+1. Rename utils/sample_config.js to config.js
+1. Update config.js with the ngrok url and API keys
 2. Install dependencies with `npm install`
 3. Start the server with `npm start`
 
