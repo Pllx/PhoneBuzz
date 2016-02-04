@@ -1,4 +1,5 @@
 function FizzBuzz() {
+  //cache results to minimize operations
   var history = {};
 
   this.createString = function(num) {
