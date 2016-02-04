@@ -22,10 +22,8 @@ function phonebuzz (req,res) {
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(resp.toString());
   } else {
-    console.log('Request validation failed');
     res.status(403).send('Validation failed: Not sent from Twilio');
   }
-  //https://demo.twilio.com/welcome/voice/
 };
 
 module.exports = phonebuzz;

@@ -6,9 +6,11 @@ $(document).ready(function() {
 
     $.post('/phonebuzz/call', {number: number})
       .done(function() {
+        // update div to notify user of success
         $('#log').text('Call succeeded!');
       }.bind(this))
       .fail(function() {
+        // update div to notify user of failure
         $('#log').text('Call failed');
       }.bind(this));
   })

@@ -7,7 +7,8 @@ function results (req,res) {
   var result = fizzbuzz(input);
   var resp = new twilio.TwimlResponse();
 
-  resp.say(result)
+  resp.say('The results are: ')
+      .say(result)
       .say('Thank you, and have a great day!')
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(resp.toString());
