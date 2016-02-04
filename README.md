@@ -11,7 +11,7 @@ Play FizzBuzz over the phone!
 
 1. Download [ngrok](https://ngrok.com/)
 2. Unzip the file, and in the same folder, run `./ngrok http 8080`
-3. Copy the https URL and enter it as the request url under 'Voice' for your Twilio number. When someone cal
+3. Copy the https URL and enter it as the request url under 'Voice' for your Twilio number. When someone calls your Twilio number, it will hit this URL.
 
 ### Configure and run
 1. Rename utils/sample_config.js to config.js
